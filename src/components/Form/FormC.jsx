@@ -1,7 +1,21 @@
 import React, { useState } from "react";
 import styles from "./FormC.module.css";
-import { Space, Button, Checkbox, Form, Input, Radio } from "antd";
+import {
+  Space,
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Radio,
+  Typography,
+  Image,
+  message,
+  Upload,
+} from "antd";
+import { CloudUploadOutlined } from "@ant-design/icons";
+
 import validator from "validator";
+import logo from "../../assets/easytaxes_logo.png";
 
 const onFinish = (values) => {
   console.log("Success:", values);
@@ -11,6 +25,8 @@ const onFinishFailed = (errorInfo) => {
 };
 
 function FormC() {
+  const { Title, Text } = Typography;
+  const { Dragger } = Upload;
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState({ value: "" });
   const [filedReturn, setFiledReturn] = useState(null);
@@ -18,6 +34,33 @@ function FormC() {
   const [ownershipAlter, setOwnershipAlter] = useState(null);
   const [transactionsType, setTransactionsType] = useState([]);
   const [documentsNeedUpld, setDocumentsNeedUpld] = useState([]);
+
+  // Drag and drop
+  // /////////////////////
+
+  const props = {
+    name: "file",
+    multiple: true,
+    // maxCount: 1,
+    action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    onChange(info) {
+      const { status } = info.file;
+      if (status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (status === "done") {
+        message.success(`${info.file.name} file uploaded successfully.`);
+      } else if (status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    onDrop(e) {
+      console.log("Dropped files", e.dataTransfer.files);
+    },
+  };
+
+  // //////////////////
+  // Drag and drop End
 
   function validateEmail(email) {
     if (validator.isEmail(email)) {
@@ -58,6 +101,10 @@ function FormC() {
     // console.log("checked = ", checkedValues);
     setDocumentsNeedUpld([...checkedValues]);
   };
+
+  function handleClickBack(e) {
+    setStep(step - 1);
+  }
 
   const transactionPrevYearOptions = [
     { label: "Capital Infusion", value: "Capital Infusion" },
@@ -140,6 +187,9 @@ function FormC() {
               </Radio.Group>
             </Form.Item>
             <Form.Item
+              wrapperCol={{
+                span: 24,
+              }}
               colon={false}
               className={filedReturn === "Yes" ? "" : "disable_form"}
               label={<label className={styles.label_form}>File upload</label>}
@@ -151,7 +201,19 @@ function FormC() {
                 },
               ]}
             >
-              <Input disabled={filedReturn === "Yes" ? false : true} />
+              {/* <Input disabled={filedReturn === "Yes" ? false : true} /> */}
+              <Dragger {...props}>
+                <p className="ant-upload-drag-icon">
+                  <CloudUploadOutlined />
+                </p>
+                <p className="ant-upload-text">
+                  Click or drag file to this area to upload
+                </p>
+                {/* <p className="ant-upload-hint">
+                  Support for a single or bulk upload. Strictly prohibited from
+                  uploading company data or other banned files.
+                </p> */}
+              </Dragger>
             </Form.Item>
             <Form.Item
               colon={false}
@@ -174,6 +236,9 @@ function FormC() {
             </Form.Item>
 
             <Form.Item
+              wrapperCol={{
+                span: 24,
+              }}
               colon={false}
               className={
                 filedReturn === "Yes" && sCorp === "Yes" ? "" : "disable_form"
@@ -191,11 +256,23 @@ function FormC() {
                 },
               ]}
             >
-              <Input
+              {/* <Input
                 disabled={
                   filedReturn === "Yes" && sCorp === "Yes" ? false : true
                 }
-              />
+              /> */}
+              <Dragger {...props}>
+                <p className="ant-upload-drag-icon">
+                  <CloudUploadOutlined />
+                </p>
+                <p className="ant-upload-text">
+                  Click or drag file to this area to upload
+                </p>
+                {/* <p className="ant-upload-hint">
+                  Support for a single or bulk upload. Strictly prohibited from
+                  uploading company data or other banned files.
+                </p> */}
+              </Dragger>
             </Form.Item>
             <Form.Item
               colon={false}
@@ -216,6 +293,9 @@ function FormC() {
             </Form.Item>
 
             <Form.Item
+              wrapperCol={{
+                span: 24,
+              }}
               colon={false}
               className={ownershipAlter === "Yes" ? "" : "disable_form"}
               label={
@@ -231,7 +311,19 @@ function FormC() {
                 },
               ]}
             >
-              <Input disabled={ownershipAlter === "Yes" ? false : true} />
+              {/* <Input disabled={ownershipAlter === "Yes" ? false : true} /> */}
+              <Dragger {...props}>
+                <p className="ant-upload-drag-icon">
+                  <CloudUploadOutlined />
+                </p>
+                <p className="ant-upload-text">
+                  Click or drag file to this area to upload
+                </p>
+                {/* <p className="ant-upload-hint">
+                  Support for a single or bulk upload. Strictly prohibited from
+                  uploading company data or other banned files.
+                </p> */}
+              </Dragger>
             </Form.Item>
 
             <Form.Item
@@ -241,10 +333,16 @@ function FormC() {
               }}
             >
               <Space>
-                <Button type="primary">Save</Button>
+                <Button
+                  className={`${styles.btn} ${styles.btn_color}`}
+                  type="primary"
+                >
+                  Save
+                </Button>
                 <Button
                   style={{ width: "5rem" }}
                   onClick={handleNext}
+                  className={`${styles.btn} ${styles.btn_color}`}
                   type="primary"
                 >
                   Next
@@ -269,6 +367,9 @@ function FormC() {
               ></Checkbox.Group>
             </Form.Item>
             <Form.Item
+              wrapperCol={{
+                span: 24,
+              }}
               label={
                 <label className={styles.label_form}>
                   Upload the Document for the same
@@ -276,7 +377,19 @@ function FormC() {
               }
               name="transactionDocument"
             >
-              <Input />
+              {/* <Input /> */}
+              <Dragger {...props}>
+                <p className="ant-upload-drag-icon">
+                  <CloudUploadOutlined />
+                </p>
+                <p className="ant-upload-text">
+                  Click or drag file to this area to upload
+                </p>
+                {/* <p className="ant-upload-hint">
+                  Support for a single or bulk upload. Strictly prohibited from
+                  uploading company data or other banned files.
+                </p> */}
+              </Dragger>
             </Form.Item>
             <Form.Item
               labelCol={{
@@ -295,6 +408,9 @@ function FormC() {
               ></Checkbox.Group>
             </Form.Item>
             <Form.Item
+              wrapperCol={{
+                span: 24,
+              }}
               label={<label className={styles.label_form}></label>}
               name="neededDocumentUpload"
               rules={[
@@ -304,20 +420,101 @@ function FormC() {
                 },
               ]}
             >
-              <Input />
+              {/* <Input /> */}
+              <Dragger {...props}>
+                <p className="ant-upload-drag-icon">
+                  <CloudUploadOutlined />
+                </p>
+                <p className="ant-upload-text">
+                  Click or drag file to this area to upload
+                </p>
+                {/* <p className="ant-upload-hint">
+                  Support for a single or bulk upload. Strictly prohibited from
+                  uploading company data or other banned files.
+                </p> */}
+              </Dragger>
             </Form.Item>
+
             <Form.Item
               wrapperCol={{
-                offset: 16,
-                span: 16,
+                // offset: 16,
+                span: 24,
+              }}
+              label={
+                <label>
+                  <Text>
+                    Please complete the payment.We will prepare the draft tax
+                    return within 48hours!
+                  </Text>
+                </label>
+              }
+            >
+              <div className={styles.easytaxes_payment_box}>
+                <Checkbox checked disabled />
+                <div className={styles.easytaxes_payment}>
+                  <div className={styles.easytaxes_payment_logo}>
+                    <Image preview={false} src={logo} width={"80px"} />
+                    <Text strong className={styles.easytaxes_payment_text}>
+                      Easytaxes
+                    </Text>
+                  </div>
+                  <Text strong className={styles.easytaxes_payment_text}>
+                    $349
+                  </Text>
+                </div>
+              </div>
+            </Form.Item>
+            {/* <Form.Item>
+            </Form.Item> */}
+            <div className={styles.line_divider}></div>
+            <div className={styles.coupan_box}>
+              <Form.Item
+                wrapperCol={{
+                  span: 24,
+                }}
+                label="Enter Cuopan"
+              >
+                <Input style={{ width: "30%", marginRight: "8px" }} />
+                <Button type="primary">Apply</Button>
+              </Form.Item>
+              <div className={styles.coupan_total}>
+                <Text strong>Total</Text>
+                <Text strong>$0</Text>
+              </div>
+            </div>
+            <div className={styles.line_divider}></div>
+            <Form.Item
+              wrapperCol={{
+                // offset: 16,
+                span: 24,
               }}
             >
-              <Space>
-                <Button type="primary">Save</Button>
-                <Button style={{ width: "5rem" }} type="primary">
-                  Submit
-                </Button>
-              </Space>
+              <div className={styles.modal_actions}>
+                <div className={styles.modal_back}>
+                  <Button
+                    onClick={handleClickBack}
+                    className={`${styles.btn} ${styles.btn_color}`}
+                    type="primary"
+                  >
+                    Back
+                  </Button>
+                </div>
+                <div className={styles.modal_submit}>
+                  <Button
+                    className={`${styles.btn} ${styles.btn_color}`}
+                    type="primary"
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    style={{ width: "5rem" }}
+                    className={`${styles.btn} ${styles.btn_color}`}
+                    type="primary"
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </div>
             </Form.Item>
           </>
         )}
