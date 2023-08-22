@@ -11,6 +11,7 @@ import {
   Image,
   message,
   Upload,
+  Divider,
 } from "antd";
 import { CloudUploadOutlined } from "@ant-design/icons";
 
@@ -41,6 +42,7 @@ function FormC() {
   const props = {
     name: "file",
     multiple: true,
+    accept: ".pdf",
     // maxCount: 1,
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     onChange(info) {
@@ -202,7 +204,10 @@ function FormC() {
               ]}
             >
               {/* <Input disabled={filedReturn === "Yes" ? false : true} /> */}
-              <Dragger {...props}>
+              <Dragger
+                disabled={filedReturn === "Yes" ? false : true}
+                {...props}
+              >
                 <p className="ant-upload-drag-icon">
                   <CloudUploadOutlined />
                 </p>
@@ -261,7 +266,12 @@ function FormC() {
                   filedReturn === "Yes" && sCorp === "Yes" ? false : true
                 }
               /> */}
-              <Dragger {...props}>
+              <Dragger
+                disabled={
+                  filedReturn === "Yes" && sCorp === "Yes" ? false : true
+                }
+                {...props}
+              >
                 <p className="ant-upload-drag-icon">
                   <CloudUploadOutlined />
                 </p>
@@ -312,7 +322,10 @@ function FormC() {
               ]}
             >
               {/* <Input disabled={ownershipAlter === "Yes" ? false : true} /> */}
-              <Dragger {...props}>
+              <Dragger
+                disabled={ownershipAlter === "Yes" ? false : true}
+                {...props}
+              >
                 <p className="ant-upload-drag-icon">
                   <CloudUploadOutlined />
                 </p>
@@ -378,7 +391,10 @@ function FormC() {
               name="transactionDocument"
             >
               {/* <Input /> */}
-              <Dragger {...props}>
+              <Dragger
+                disabled={transactionsType.length === 0 ? true : false}
+                {...props}
+              >
                 <p className="ant-upload-drag-icon">
                   <CloudUploadOutlined />
                 </p>
@@ -421,7 +437,10 @@ function FormC() {
               ]}
             >
               {/* <Input /> */}
-              <Dragger {...props}>
+              <Dragger
+                disabled={documentsNeedUpld.length === 0 ? true : false}
+                {...props}
+              >
                 <p className="ant-upload-drag-icon">
                   <CloudUploadOutlined />
                 </p>
@@ -466,7 +485,7 @@ function FormC() {
             </Form.Item>
             {/* <Form.Item>
             </Form.Item> */}
-            <div className={styles.line_divider}></div>
+            <Divider />
             <div className={styles.coupan_box}>
               <Form.Item
                 wrapperCol={{
@@ -475,14 +494,16 @@ function FormC() {
                 label="Enter Cuopan"
               >
                 <Input style={{ width: "30%", marginRight: "8px" }} />
-                <Button type="primary">Apply</Button>
+                <Button className={styles.btn} type="primary">
+                  Apply
+                </Button>
               </Form.Item>
               <div className={styles.coupan_total}>
                 <Text strong>Total</Text>
                 <Text strong>$0</Text>
               </div>
             </div>
-            <div className={styles.line_divider}></div>
+            <Divider />
             <Form.Item
               wrapperCol={{
                 // offset: 16,
